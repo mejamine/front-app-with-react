@@ -58,6 +58,16 @@
         border-radius: 5px;
         cursor: pointer;
         }
+        .btn-blue {
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #3d50ff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            }
         .btn-danger:hover {
         background-color: #b32700;
         }

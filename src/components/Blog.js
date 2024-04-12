@@ -1,9 +1,10 @@
 import React ,{useState, useEffect,inputRef,useRef} from 'react'
 import axios from 'axios'
 import './Blog.css'
-
+import {useNavigate} from 'react-router-dom';
 import { Link } from 'react-router-dom'
 const Blog =()=>{
+    const navigate = useNavigate();
     const [blogs , setBlogs]=useState([])
     const [deleteMsg, setDeleteMsg]=useState(false)
     useEffect(()=>{
@@ -32,12 +33,15 @@ const DeletePost = async (id)=>{
         console.error('Somthing went wrong !' , error);
     }
 };
+const UpdatePost = (id)=>{
+    navigate(`/update/${id}`);
+}
 
     return (
         <div className="container" ref={inputRef}>
             <div className="flex">
                 <h1>Blog List</h1>
-                <Link className="btn-primary" to="/blog/create">Create Post</Link>
+                <Link className="btn-primary" to="/create">Create Post</Link>
             </div>
             {deleteMsg &&
                 <div style={{ backgroundColor :"#34cd60", color:"#fff",padding:"10px",borderRadius:"5px"}}>
@@ -58,6 +62,12 @@ const DeletePost = async (id)=>{
                                     className="btn-danger"
                                 >
                                     delete
+                                </button>
+                                <button
+                                    onClick={()=> UpdatePost(blog.id)}
+                                    className="btn-blue"
+                                >
+                                    update
                                 </button>
                             </div>
                         </div>

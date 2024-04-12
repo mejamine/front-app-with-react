@@ -1,10 +1,25 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
-import './createPost.css';
-const CreatePost =()=>{
-    const navigate = useNavigate();
+import {useNavigate,useParams} from 'react-router-dom';
+import './updatePost.css';
+const UpdatePost =()=>{
+    const {id} = useParams('id');
     const [newBlog, setNewBlog] = useState({});
+    useEffect(() => {
+        getPost();
+      }, []);
+    
+      const getPost = async() => {
+        await axios.get(`http://localhost:3000/api/posts/${id}`)
+          .then((item) => {
+            setNewBlog(item.data);
+            console.log(newBlog);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+    const navigate = useNavigate();
     const handleChange = (e)=>{
         setNewBlog({
             ...newBlog,
@@ -14,10 +29,10 @@ const CreatePost =()=>{
     const handleSubmit = async (e)=>{
         e.preventDefault();
         try{
-            await axios.post('http://localhost:3000/api/posts', newBlog);
+            await axios.put(`http://localhost:3000/api/posts/${id}`, newBlog);
             navigate('/');
         }catch(error){
-            console.error("Error creating blog:",error);
+            console.error("Error Updating blog:",error);
         }
     };
     return(
@@ -31,6 +46,7 @@ const CreatePost =()=>{
                         name="title"
                         onChange={handleChange}
                         requiredplaceholder="enter title"
+                        value={newBlog.title}
                     />
                 </div>
                 <div className="form-control">
@@ -40,6 +56,7 @@ const CreatePost =()=>{
                         name="content"
                         onChange={handleChange}
                         requiredplaceholder="enter content"
+                        value={newBlog.content}
                     />
                 </div>
                 <div className="form-control">
@@ -49,6 +66,7 @@ const CreatePost =()=>{
                         name="author"
                         onChange={handleChange}
                         requiredplaceholder="enter author"
+                        value={newBlog.author}
                     />
                 </div>
                 <div className="form-control">
@@ -58,6 +76,7 @@ const CreatePost =()=>{
                         name="slug"
                         onChange={handleChange}
                         requiredplaceholder="enter slug"
+                        value={newBlog.slug}
                     />
                 </div>
                 <div className="form-control">
@@ -67,13 +86,14 @@ const CreatePost =()=>{
                         name="tags"
                         onChange={handleChange}
                         requiredplaceholder="enter tags"
+                        value={newBlog.tags}
                     />
                 </div>
                 <button className="custom-button" type="submit" onClick={handleSubmit}>
-                    Create Blog
+                    Update Blog
                 </button>
             </div>
         </div>    
     );
 };
-export default CreatePost;
+export default UpdatePost;
